@@ -768,7 +768,11 @@ public class Dataset extends DvObjectContainer {
         
         Pattern gitHubPattern = Pattern.compile("(https|http)://github.com/[a-zA-z0-9]+([\\-][a-zA-z0-9]+)*/[a-zA-z0-9]+([\\-][a-zA-z0-9]+)*");
         Matcher m = gitHubPattern.matcher(note);
-        return m.group();
+        if(m.find()) {
+            return m.group();
+        } else {
+            return null;
+        }
     }
     
     public boolean hasGithubUrl() {
