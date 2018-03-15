@@ -761,7 +761,7 @@ public class Dataset extends DvObjectContainer {
         
         String note = "";
         for (DatasetField dsfv : dsv.getDatasetFields()) {
-            if (dsfv.getDatasetFieldType().getName().equals(DatasetFieldConstant.note)) {
+            if (dsfv.getDatasetFieldType().getName().equals(DatasetFieldConstant.notesText)) {
                 note = dsfv.getDisplayValue();
             }
         }
@@ -776,7 +776,7 @@ public class Dataset extends DvObjectContainer {
     }
     
     public boolean hasGithubUrl() {
-        return !getGithubUrl().equals("");
+        return getGithubUrl() != null;
     }
     
     public String getBinderSuffix() {
