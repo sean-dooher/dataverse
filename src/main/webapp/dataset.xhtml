@@ -261,7 +261,9 @@
                                 </div>
                             </p:dialog>
                             <!-- END: Contact/Share Button Group -->
-
+                            <c:if test="${DatasetPage.dataset.hasGithubUrl()}">
+                                <a href="https://mybinder.org/v2/gh/#{DatasetPage.dataset.binderSuffix}/master" class="btn btn-secondary">Open in Binder</a>
+                            </c:if>
                             <!-- Metrics -->
                             <div id="metrics-block" class="col-xs-3" jsf:rendered="#{!(settingsWrapper.rsyncDownload or DatasetPage.workingVersion.deaccessioned)}">
                                 <div id="metrics-label" class="col-xs-4 small text-center">

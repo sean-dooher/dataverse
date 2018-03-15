@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -753,6 +755,36 @@ public class Dataset extends DvObjectContainer {
         return dsv != null ? dsv.getTitle() : getLatestVersion().getTitle();
     }
 
+    public String getGithubUrl() {
+        DatasetVersion dsv = getReleasedVersion();
+        dsv = dsv != null ? dsv : getLatestVersion();
+        
+        String note = "";
+        for (DatasetField dsfv : dsv.getDatasetFields()) {
+            if (dsfv.getDatasetFieldType().getName().equals(DatasetFieldConstant.note)) {
+                note = dsfv.getDisplayValue();
+            }
+        }
+        
+        Pattern gitHubPattern = Pattern.compile("(https|http)://github.com/[a-zA-z0-9]+([\\-][a-zA-z0-9]+)*/[a-zA-z0-9]+([\\-][a-zA-z0-9]+)*");
+        Matcher m = gitHubPattern.matcher(note);
+        return m.group();
+    }
+    
+    public boolean hasGithubUrl() {
+        return !getGithubUrl().equals("");
+    }
+    
+    public String getBinderSuffix() {
+        if(this.hasGithubUrl()) {
+            String gitUrl = this.getGithubUrl();
+            String[] gitSplit = gitUrl.split("/");
+            return gitSplit[gitSplit.length - 2] + "/" + gitSplit[gitSplit.length - 1];
+        } else {
+            return "";
+        }
+    }
+    
     @Override
     protected boolean isPermissionRoot() {
         return false;
